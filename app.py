@@ -170,7 +170,7 @@ def update_gemini_usage(usage):
 chats = get_chats(st.session_state.owner_id)
 
 if not chats:
-    st.session_state.active_chat_id = create_chat()
+    st.session_state.active_chat_id = create_chat(st.session_state.owner_id)
     chats = get_chats(st.session_state.owner_id)
 
 chat_ids = [chat["id"] for chat in chats]
@@ -192,7 +192,7 @@ with st.sidebar:
     # NEW CHAT
 
     if st.button("＋  New Chat", use_container_width=True, type="primary"):
-        st.session_state.active_chat_id = create_chat()
+        st.session_state.active_chat_id = create_chat(st.session_state.owner_id)
         st.rerun()
 
     st.divider()
@@ -221,7 +221,7 @@ with st.sidebar:
 
             if st.button("🗑️", key=f"delete_{chat_id}", help="Delete conversation"):
 
-                delete_chat(chat_id)
+                delete_chat(chat_id, st.session_state.owner_id)
                 remaining_chats = get_chats(st.session_state.owner_id)
 
                 if chat_id == st.session_state.active_chat_id:
@@ -229,7 +229,9 @@ with st.sidebar:
                     if remaining_chats:
                         st.session_state.active_chat_id = remaining_chats[0]["id"]
                     else:
-                        st.session_state.active_chat_id = create_chat()
+                        st.session_state.active_chat_id = create_chat(
+                            st.session_state.owner_id
+                        )
 
                 st.rerun()
 
@@ -255,7 +257,11 @@ with st.sidebar:
 
             if new_title.strip():
 
-                rename_chat(st.session_state.active_chat_id, new_title.strip())
+                rename_chat(
+                    st.session_state.active_chat_id,
+                    st.session_state.owner_id,
+                    new_title.strip(),
+                )
 
                 st.rerun()
 
@@ -427,7 +433,7 @@ st.caption("Your personal AI assistant")
 # =================================
 
 active_chat_id = st.session_state.active_chat_id
-messages = get_messages(active_chat_id)
+messages = get_messages(active_chat_id, st.session_state.owner_id)
 
 
 # =================================
@@ -475,7 +481,7 @@ if user_prompt:
 
     # SAVE USER MESSAGE
 
-    add_message(active_chat_id, "user", user_prompt)
+    add_message(active_chat_id, st.session_state.owner_id, "user", user_prompt)
 
     # GENERATE CHAT TITLE
 
@@ -486,7 +492,7 @@ if user_prompt:
         if len(title) > 35:
             title = title[:35] + "..."
 
-        rename_chat(active_chat_id, title)
+        rename_chat(active_chat_id, st.session_state.owner_id, title)
 
     # DISPLAY USER MESSAGE
 
@@ -495,7 +501,7 @@ if user_prompt:
 
     # RETRIEVE CONVERSATION HISTORY
 
-    conversation = get_messages(active_chat_id)
+    conversation = get_messages(active_chat_id, st.session_state.owner_id)
 
     # INITIALIZE RETRIEVED CHUNKS
 
@@ -556,7 +562,9 @@ if user_prompt:
         with st.chat_message("assistant", avatar="💬"):
             st.markdown(assistant_response)
 
-        add_message(active_chat_id, "assistant", assistant_response)
+        add_message(
+            active_chat_id, st.session_state.owner_id, "assistant", assistant_response
+        )
 
         st.rerun()
 
@@ -574,7 +582,12 @@ if user_prompt:
                     )
                 )
 
-                add_message(active_chat_id, "assistant", assistant_response)
+                add_message(
+                    active_chat_id,
+                    st.session_state.owner_id,
+                    "assistant",
+                    assistant_response,
+                )
 
                 st.rerun()
 
