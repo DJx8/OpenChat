@@ -1,6 +1,7 @@
 import streamlit as st
 import hashlib
 import re
+import uuid
 
 from config import APP_ENV
 from embedding import generate_embeddings
@@ -138,6 +139,10 @@ for key, value in defaults.items():
     if key not in st.session_state:
         st.session_state[key] = value
 
+# Unique ID for this browser session
+if "owner_id" not in st.session_state:
+    st.session_state.owner_id = str(uuid.uuid4())
+
 # =================================
 # GEMINI USAGE TRACKING
 # =================================
@@ -162,11 +167,11 @@ def update_gemini_usage(usage):
 # LOAD CONVERSATIONS
 # =================================
 
-chats = get_chats()
+chats = get_chats(st.session_state.owner_id)
 
 if not chats:
     st.session_state.active_chat_id = create_chat()
-    chats = get_chats()
+    chats = get_chats(st.session_state.owner_id)
 
 chat_ids = [chat["id"] for chat in chats]
 
@@ -217,7 +222,7 @@ with st.sidebar:
             if st.button("🗑️", key=f"delete_{chat_id}", help="Delete conversation"):
 
                 delete_chat(chat_id)
-                remaining_chats = get_chats()
+                remaining_chats = get_chats(st.session_state.owner_id)
 
                 if chat_id == st.session_state.active_chat_id:
 
@@ -233,7 +238,9 @@ with st.sidebar:
     # RENAME CONVERSATION
 
     active_chat = next(
-        chat for chat in get_chats() if chat["id"] == st.session_state.active_chat_id
+        chat
+        for chat in get_chats(st.session_state.owner_id)
+        if chat["id"] == st.session_state.active_chat_id
     )
 
     with st.expander("✏️ Rename conversation"):
