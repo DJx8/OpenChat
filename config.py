@@ -1,9 +1,28 @@
 import os
+import streamlit as st
 from dotenv import load_dotenv
 
-# Load environment variables from .env
 load_dotenv()
 
+
+def get_setting(name, default=None):
+    # First check Streamlit Cloud Secrets
+    try:
+        value = st.secrets.get(name)
+        if value is not None:
+            return str(value)
+    except Exception:
+        pass
+
+    # Otherwise check local environment variables
+    return os.getenv(name, default)
+
+
+APP_ENV = get_setting("APP_ENV", "local").lower()
+
+EMBEDDING_PROVIDER = get_setting(
+    "EMBEDDING_PROVIDER", "ollama" if APP_ENV == "local" else "gemini"
+).lower()
 
 # =================================
 # LLM CONFIGURATION
@@ -40,7 +59,7 @@ OLLAMA_TIMEOUT = 180
 
 GEMINI_MODEL = "gemini-3.5-flash-lite"
 
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+GEMINI_API_KEY = get_setting("GEMINI_API_KEY")
 
 
 # =================================

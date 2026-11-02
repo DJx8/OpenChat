@@ -2,6 +2,7 @@ import streamlit as st
 import hashlib
 import re
 
+from config import APP_ENV
 from embedding import generate_embeddings
 from similarity import retrieve_relevant_chunks
 
@@ -257,30 +258,41 @@ with st.sidebar:
 
     st.markdown("### 🤖 Select AI Model")
 
-    selected_model = st.selectbox(
-        "Choose your model",
-        options=[
-            "Local (Ollama)",
-            "Online (Gemini)",
-        ],
-        key="selected_model",
-    )
+    if APP_ENV == "cloud":
 
-    if selected_model == "Local (Ollama)":
-
-        provider_name = "ollama"
-
-        st.caption("🧠 Qwen 2.5 0.5B")
-        st.caption("⚡ Powered by Ollama")
-        st.caption("🖥️ Runs on your laptop")
-
-    else:
-
+        selected_model = "Online (Gemini)"
         provider_name = "gemini"
 
         st.caption("🧠 Gemini 3.5 Flash-Lite")
         st.caption("⚡ Powered by Google")
-        st.caption("☁️ Requires internet")
+        st.caption("☁️ Cloud deployment")
+
+    else:
+
+        selected_model = st.selectbox(
+            "Choose your model",
+            options=[
+                "Local (Ollama)",
+                "Online (Gemini)",
+            ],
+            key="selected_model",
+        )
+
+        if selected_model == "Local (Ollama)":
+
+            provider_name = "ollama"
+
+            st.caption("🧠 Qwen 2.5 0.5B")
+            st.caption("⚡ Powered by Ollama")
+            st.caption("🖥️ Runs on your laptop")
+
+        else:
+
+            provider_name = "gemini"
+
+            st.caption("🧠 Gemini 3.5 Flash-Lite")
+            st.caption("⚡ Powered by Google")
+            st.caption("☁️ Requires internet")
 
     # =================================
     # DEVELOPER STATISTICS
