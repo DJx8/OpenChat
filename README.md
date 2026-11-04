@@ -7,13 +7,13 @@
   <a href="https://github.com/DJx8/OpenChat">GitHub Repository</a>
 </p>
 
-## 🚀 Overview
+## Overview
 
 OpenChat is a ChatGPT-style AI chatbot built using Python and Streamlit. It supports both locally running language models through Ollama and cloud-based models through Google Gemini.
 
 It also includes Retrieval-Augmented Generation (RAG), allowing users to upload PDF or TXT documents and ask questions based on their contents.
 
-## ✨ Features
+## Features
 
 - **Dual AI providers:** Switch between local Ollama and online Google Gemini.
 - **Document Q&A:** Upload PDF and TXT files and ask questions about their contents.
@@ -24,7 +24,7 @@ It also includes Retrieval-Augmented Generation (RAG), allowing users to upload 
 - **Streaming responses:** Display AI-generated responses as they are produced.
 - **Usage tracking:** Monitor Gemini requests and token usage during a session.
 
-## 🧠 AI Models
+## AI Models
 
 | Provider | Model | Purpose |
 |---|---|---|
@@ -35,7 +35,7 @@ It also includes Retrieval-Augmented Generation (RAG), allowing users to upload 
 
 The cloud deployment uses Gemini because it cannot access Ollama running on a user's personal computer.
 
-## 🏗️ Project Architecture
+## Project Architecture
 
 | File | Responsibility |
 |---|---|
@@ -60,7 +60,7 @@ OpenChat uses a Retrieval-Augmented Generation pipeline for document-based quest
 5. **Retrieval:** Relevant chunks are identified using semantic similarity and keyword matching.
 6. **Generation:** Retrieved content is passed to the selected LLM to generate an answer.
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 - **Language:** Python
 - **Frontend:** Streamlit
@@ -72,7 +72,7 @@ OpenChat uses a Retrieval-Augmented Generation pipeline for document-based quest
 - **Deployment:** Streamlit Community Cloud
 - **Version Control:** Git and GitHub
 
-## 💻 Run Locally
+## Run Locally
 
 ### Prerequisites
 
@@ -162,14 +162,14 @@ The cloud version uses Gemini for chat and embeddings. Local Ollama support is a
 
 **Note:** Streamlit Community Cloud's local filesystem is not guaranteed to persist across app restarts or redeployments. The cloud deployment does not provide permanent database storage or user-account authentication.
 
-## 📌 Future Improvements
+## Future Improvements
 
 - Hosted database for durable conversation storage.
 - User authentication and account management.
 - Improved document retrieval and source references.
 - Additional LLM provider integrations.
 
-## 👨‍💻 Author
+## Author
 
 **Dhananjay A V**
 
