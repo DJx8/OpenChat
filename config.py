@@ -32,8 +32,6 @@ EMBEDDING_PROVIDER = get_setting(
 # EMBEDDING CONFIGURATION
 # =================================
 
-EMBEDDING_PROVIDER = os.getenv("EMBEDDING_PROVIDER", "ollama")
-
 OLLAMA_EMBEDDING_MODEL = "all-minilm"
 
 GEMINI_EMBEDDING_MODEL = "gemini-embedding-001"
