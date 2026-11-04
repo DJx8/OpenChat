@@ -1,5 +1,12 @@
 
-streamlit
-google-genai
-python-dotenv
-pymupdf
+# Web application
+streamlit==1.66.1
+
+# Google Gemini API
+google-genai==2.34.0
+
+# Environment variables
+python-dotenv==1.2.4
+
+# PDF document processing
+PyMuPDF==2.0
